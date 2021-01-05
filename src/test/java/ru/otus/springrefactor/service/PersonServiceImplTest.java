@@ -1,7 +1,11 @@
 package ru.otus.springrefactor.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,13 +17,18 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 
 @DisplayName("Сервис PersonServiceImpl")
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class PersonServiceImplTest {
 
-    @MockBean
+    @Mock
     private PersonRepository repository;
-    @Autowired
+
     private PersonService personService;
+
+    @BeforeEach
+    void setUp() {
+        this.personService = new PersonServiceImpl(repository);
+    }
 
     @DisplayName("должен вызвать метод save репозитория")
     @Test
